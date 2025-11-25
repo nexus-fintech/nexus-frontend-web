@@ -5,6 +5,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {BaseFormComponent} from '../../../shared/components/base-form.component';
 import {LoanRequest} from '../../model/loan-request.request';
+import {MatCardModule} from '@angular/material/card';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-loan-request-form',
@@ -13,7 +15,9 @@ import {LoanRequest} from '../../model/loan-request.request';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule
   ],
   templateUrl: './loan-request-form.component.html',
   styleUrl: './loan-request-form.component.scss'
