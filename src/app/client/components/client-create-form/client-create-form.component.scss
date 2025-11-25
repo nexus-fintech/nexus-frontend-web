@@ -1,8 +1,73 @@
-.text-primary {
-  color: var(--mat-toolbar-container-background-color);
-  color: #1a237e;
+.form-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
-.text-accent {
-  color: #00bfa5;
+.form-card {
+  width: 100%;
+  max-width: 800px;
+}
+
+.form-header {
+  background-color: #f8fafc;
+  padding: 16px;
+  border-bottom: 1px solid #e2e8f0;
+
+  .avatar-bg {
+    background-color: #e0e7ff;
+    color: #312e81;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+}
+
+.form-content {
+  padding: 24px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.section-title {
+  margin-top: 16px;
+  margin-bottom: 8px;
+
+  h3 {
+    margin: 0 0 8px 0;
+    color: #475569;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px solid #e2e8f0;
+  }
+}
+
+.form-actions {
+  padding: 16px;
+  background-color: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+}
+
+mat-icon[matPrefix] {
+  margin-right: 8px;
+  color: #94a3b8;
 }
