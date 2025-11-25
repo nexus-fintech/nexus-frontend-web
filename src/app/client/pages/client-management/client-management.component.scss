@@ -1,0 +1,91 @@
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+
+  h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 500;
+    color: #1e293b;
+  }
+
+  p {
+    margin: 4px 0 0;
+    color: #64748b;
+  }
+}
+
+.table-card {
+  overflow: hidden;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+.full-width-table {
+  width: 100%;
+
+  .header-cell {
+    background-color: #f8fafc;
+    color: #475569;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  .table-row {
+    transition: background-color 0.2s;
+    &:hover {
+      background-color: #f1f5f9;
+    }
+  }
+
+  .cell-id { color: #94a3b8; font-family: monospace; }
+  .cell-name { font-weight: 500; color: #0f172a; }
+  .cell-email { color: #64748b; }
+
+  .badge-dni {
+    background-color: #e2e8f0;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .cell-city mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    color: #94a3b8;
+    margin-right: 4px;
+  }
+
+  .align-right {
+    text-align: right;
+    padding-right: 24px;
+  }
+
+  .no-data-cell {
+    text-align: center;
+    padding: 48px;
+    color: #94a3b8;
+
+    mat-icon { font-size: 48px; width: 48px; height: 48px; margin-bottom: 8px; opacity: 0.5; }
+    p { margin: 0; }
+  }
+}
+
+.paginator {
+  border-top: 1px solid #e2e8f0;
+}

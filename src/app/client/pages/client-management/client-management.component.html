@@ -1,113 +1,88 @@
-<div class="container mx-auto p-6 max-w-7xl">
+<div class="page-container">
 
-  <!-- 1. HEADER DE PÁGINA (Contexto Global) -->
-  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-    <div>
-      <h1 class="text-3xl font-bold text-slate-800 tracking-tight m-0">Client Management</h1>
-      <p class="text-slate-500 text-sm mt-1">Manage your customer database and credit profiles</p>
+  <header class="page-header">
+    <div class="header-content">
+      <h1>Client Management</h1>
+      <p>Manage your customer database and credit profiles</p>
     </div>
 
-    <!-- El botón solo aparece si NO estamos creando, para evitar duplicidad visual -->
     @if (!isCreating) {
-      <button mat-flat-button color="primary" (click)="startCreation()" class="shadow-md transition-transform active:scale-95">
-        <mat-icon class="mr-1">add</mat-icon> New Client
+      <button mat-flat-button color="primary" (click)="startCreation()">
+        <mat-icon>add</mat-icon> New Client
       </button>
     }
-  </div>
+  </header>
 
-  <!-- 2. CONTENIDO PRINCIPAL -->
+  <main>
 
-  @if (isCreating) {
-    <!-- MODO CREACIÓN: Animación de entrada suave -->
-    <div class="animate-fade-in-up">
+    @if (isCreating) {
       <app-client-create-form
         (formSubmitted)="onClientCreated($event)"
         (formCanceled)="onCancelCreation()">
       </app-client-create-form>
-    </div>
-  }
+    }
 
-  @else {
-    <!-- MODO LISTA: Tarjeta de Datos -->
-    <mat-card class="shadow-lg rounded-lg overflow-hidden border border-gray-200">
+    @else {
+      <mat-card class="table-card">
+        <mat-card-content class="no-padding">
 
-      <!-- Loading Bar (Opcional, buena práctica UX para el futuro) -->
-      <!-- <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar> -->
+          <table mat-table [dataSource]="dataSource" matSort class="full-width-table">
 
-      <mat-card-content class="p-0">
-        <table mat-table [dataSource]="dataSource" matSort class="w-full">
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-cell"> ID </th>
+              <td mat-cell *matCellDef="let element" class="cell-id"> #{{element.id}} </td>
+            </ng-container>
 
-          <!-- ID -->
-          <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-slate-50 text-slate-700 font-bold uppercase text-xs tracking-wider"> ID </th>
-            <td mat-cell *matCellDef="let element" class="text-slate-500 font-mono text-xs"> #{{element.id}} </td>
-          </ng-container>
+            <ng-container matColumnDef="fullName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-cell"> Full Name </th>
+              <td mat-cell *matCellDef="let element" class="cell-name">
+                {{element.firstName}} {{element.lastName}}
+              </td>
+            </ng-container>
 
-          <!-- Full Name -->
-          <ng-container matColumnDef="fullName">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-slate-50 text-slate-700 font-bold uppercase text-xs tracking-wider"> Full Name </th>
-            <td mat-cell *matCellDef="let element">
-              <div class="flex flex-col">
-                <span class="font-medium text-slate-900">{{element.firstName}} {{element.lastName}}</span>
-              </div>
-            </td>
-          </ng-container>
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef class="header-cell"> Email </th>
+              <td mat-cell *matCellDef="let element" class="cell-email"> {{element.email}} </td>
+            </ng-container>
 
-          <!-- Email -->
-          <ng-container matColumnDef="email">
-            <th mat-header-cell *matHeaderCellDef class="bg-slate-50 text-slate-700 font-bold uppercase text-xs tracking-wider"> Email </th>
-            <td mat-cell *matCellDef="let element" class="text-slate-500"> {{element.email}} </td>
-          </ng-container>
+            <ng-container matColumnDef="dni">
+              <th mat-header-cell *matHeaderCellDef class="header-cell"> DNI </th>
+              <td mat-cell *matCellDef="let element">
+                <span class="badge-dni"> {{element.dni}} </span>
+              </td>
+            </ng-container>
 
-          <!-- DNI -->
-          <ng-container matColumnDef="dni">
-            <th mat-header-cell *matHeaderCellDef class="bg-slate-50 text-slate-700 font-bold uppercase text-xs tracking-wider"> DNI </th>
-            <td mat-cell *matCellDef="let element">
-              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-800">
-                {{element.dni}}
-              </span>
-            </td>
-          </ng-container>
+            <ng-container matColumnDef="city">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="header-cell"> City </th>
+              <td mat-cell *matCellDef="let element" class="cell-city">
+                <mat-icon>location_on</mat-icon> {{element.city}}
+              </td>
+            </ng-container>
 
-          <!-- City -->
-          <ng-container matColumnDef="city">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="bg-slate-50 text-slate-700 font-bold uppercase text-xs tracking-wider"> City </th>
-            <td mat-cell *matCellDef="let element" class="text-slate-600">
-              <div class="flex items-center gap-1">
-                <mat-icon class="text-gray-400 text-sm w-4 h-4" inline>location_on</mat-icon>
-                {{element.city}}
-              </div>
-            </td>
-          </ng-container>
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef class="header-cell align-right"> Actions </th>
+              <td mat-cell *matCellDef="let element" class="align-right">
+                <button mat-icon-button color="primary">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+              </td>
+            </ng-container>
 
-          <!-- Actions -->
-          <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef class="bg-slate-50 text-slate-700 font-bold uppercase text-xs tracking-wider text-right pr-6"> Actions </th>
-            <td mat-cell *matCellDef="let element" class="text-right pr-4">
-              <button mat-icon-button color="primary" matTooltip="View Details" class="text-indigo-600 hover:bg-indigo-50">
-                <mat-icon>visibility</mat-icon>
-              </button>
-            </td>
-          </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
 
-          <!-- Header y Rows -->
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="hover:bg-slate-50 transition-colors border-b border-gray-100 last:border-0"></tr>
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell no-data-cell" colspan="6">
+                <mat-icon>folder_off</mat-icon>
+                <p>No clients found.</p>
+              </td>
+            </tr>
+          </table>
 
-          <!-- No Data -->
-          <tr class="mat-row" *matNoDataRow>
-            <td class="mat-cell p-8 text-center" colspan="6">
-              <div class="flex flex-col items-center justify-center text-slate-400">
-                <mat-icon class="text-5xl mb-2 text-slate-300">folder_off</mat-icon>
-                <p class="text-lg font-medium">No clients found</p>
-                <p class="text-sm">Get started by registering a new client.</p>
-              </div>
-            </td>
-          </tr>
-        </table>
-      </mat-card-content>
+        </mat-card-content>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="paginator"></mat-paginator>
+      </mat-card>
+    }
+  </main>
 
-      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="border-t border-gray-200"></mat-paginator>
-    </mat-card>
-  }
 </div>
