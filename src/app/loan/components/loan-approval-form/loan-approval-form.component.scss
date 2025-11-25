@@ -1,0 +1,47 @@
+.approval-form-container {
+  padding: 24px;
+}
+
+.risk-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.risk-alert {
+  background-color: #fffbeb;
+  border-left: 4px solid #f59e0b;
+  padding: 12px 16px;
+  border-radius: 4px;
+  display: flex;
+  gap: 12px;
+  margin-bottom: 8px;
+
+  .alert-icon {
+    color: #d97706;
+  }
+
+  .alert-content {
+    color: #92400e;
+    font-size: 13px;
+
+    strong { display: block; margin-bottom: 2px; }
+    p { margin: 0; line-height: 1.4; }
+  }
+}
+
+.full-width {
+  width: 100%;
+}
+
+.actions {
+  margin-top: 8px;
+  display: flex;
+  justify-content: flex-end;
+
+  .evaluate-btn {
+    width: 100%;
+    padding: 8px;
+    font-weight: 500;
+  }
+}

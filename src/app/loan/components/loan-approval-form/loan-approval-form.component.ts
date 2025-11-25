@@ -5,11 +5,12 @@ import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {BaseFormComponent} from '../../../shared/components/base-form.component';
 import {LoanApprovalRequest} from '../../model/loan-approval.request';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-loan-approval-form',
   standalone: true,
-  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule],
   templateUrl: './loan-approval-form.component.html',
   styleUrl: './loan-approval-form.component.scss'
 })
