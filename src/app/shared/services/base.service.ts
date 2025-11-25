@@ -18,15 +18,27 @@ export class BaseService<T> {
     })
   }
 
-  constructor(private http: HttpClient) {  }
+  constructor(protected  http: HttpClient) {  }
 
-  handleError(error: HttpErrorResponse) {
+  /*handleError(error: HttpErrorResponse) {
     // Default error handling
     if (error.error instanceof ErrorEvent) {
       console.log(`An error occurred ${error.error.message}`);
     } else {
       // Unsuccessful Response Error Code returned from Backend
       console.log(`Backend returned code ${error.status}, body was ${error.error}`);
+    }
+    return throwError(() => new Error('Something happened with request, please try again later'));
+  }*/
+  handleError(error: HttpErrorResponse) {
+    // Imprime todo el objeto para ver qué trae
+    console.log('🛑 ERROR COMPLETO:', JSON.stringify(error));
+
+    if (error.error instanceof ErrorEvent) {
+      console.log(`An error occurred ${error.error.message}`);
+    } else {
+      // Aquí veremos si el "error" es en realidad tu lista de clientes
+      console.log(`Backend returned code ${error.status}, body was: `, error.error);
     }
     return throwError(() => new Error('Something happened with request, please try again later'));
   }
@@ -50,12 +62,12 @@ export class BaseService<T> {
   }
 
   // Get All Resources
-  getAll(): Observable<T> {
-    return this.http.get<T>(this.resourcePath(), this.httpOptions)
+  getAll(): Observable<T[]> {
+    return this.http.get<T[]>(this.resourcePath(), this.httpOptions)
       .pipe(retry(2), catchError(this.handleError));
   }
 
-  private resourcePath(): string {
+  protected resourcePath(): string {
     return `${this.basePath}${this.resourceEndpoint}`;
   }
 }
