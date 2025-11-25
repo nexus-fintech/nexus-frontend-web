@@ -1,0 +1,27 @@
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.page-header {
+  margin-bottom: 32px;
+  text-align: center;
+
+  h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 500;
+    color: #1e293b;
+  }
+
+  p {
+    margin: 8px 0 0;
+    color: #64748b;
+  }
+}
+
+.page-content {
+  display: flex;
+  justify-content: center;
+}
