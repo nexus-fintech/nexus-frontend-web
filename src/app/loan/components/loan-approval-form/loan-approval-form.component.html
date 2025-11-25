@@ -1,0 +1,27 @@
+<form [formGroup]="riskForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 gap-4">
+
+  <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-2">
+    <p class="text-sm text-yellow-700">
+      <strong>Risk Analysis Required:</strong> Please update the client's financial data to evaluate creditworthiness.
+    </p>
+  </div>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Client Age</mat-label>
+    <input matInput type="number" formControlName="clientAge">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Monthly Income ($)</mat-label>
+    <input matInput type="number" formControlName="monthlyIncome">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Monthly Debt ($)</mat-label>
+    <input matInput type="number" formControlName="monthlyDebt">
+  </mat-form-field>
+
+  <button mat-flat-button color="accent" type="submit" [disabled]="riskForm.invalid">
+    Evaluate Risk & Approve
+  </button>
+</form>
