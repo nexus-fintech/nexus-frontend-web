@@ -1,0 +1,46 @@
+<mat-toolbar color="primary" class="mat-elevation-z4 px-4">
+
+  <!-- Logo / Título -->
+  <button mat-button routerLink="/home" class="font-bold text-lg tracking-wide flex items-center gap-2">
+    <mat-icon>account_balance</mat-icon>
+    <span>NEXUS FINANCE</span>
+  </button>
+
+  <!-- Espaciador flexible -->
+  <span class="flex-1"></span>
+
+  <!-- Navegación Desktop (Oculta en móvil si usáramos responsive completo, aquí simplificado) -->
+  <div class="hidden md:flex gap-2 items-center">
+
+    <!-- Link simple -->
+    <button mat-button routerLink="/home" routerLinkActive="bg-black/10">
+      Home
+    </button>
+
+    <!-- Bounded Context: CLIENTS -->
+    <button mat-button routerLink="/clients" routerLinkActive="bg-black/10">
+      Clients
+    </button>
+
+    <!-- Bounded Context: LOANS (Con submenú visual o botones separados) -->
+    <!-- Opción A: Botones directos para MVP -->
+    <button mat-button routerLink="/loans/apply" routerLinkActive="bg-black/10">
+      Request Loan
+    </button>
+
+    <button mat-button routerLink="/loans/evaluate" routerLinkActive="bg-black/10" color="accent" class="bg-white/10 text-white">
+      <mat-icon class="mr-1">gavel</mat-icon> Risk Engine
+    </button>
+
+    <!-- Link About -->
+    <button mat-icon-button routerLink="/about" aria-label="About Nexus Finance">
+      <mat-icon>info</mat-icon>
+    </button>
+  </div>
+
+  <!-- Botón Menú Móvil (Placeholder visual) -->
+  <button mat-icon-button class="md:hidden">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+</mat-toolbar>
