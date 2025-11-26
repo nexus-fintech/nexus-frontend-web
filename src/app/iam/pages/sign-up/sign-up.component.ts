@@ -21,7 +21,7 @@ import {RouterLink} from "@angular/router";
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    RouterLink // Agregado para el link de "Ya tengo cuenta"
+    RouterLink
   ],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.scss'

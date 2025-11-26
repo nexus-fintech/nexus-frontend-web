@@ -1,0 +1,18 @@
+<div class="page-container">
+
+  <header class="page-header">
+    <div class="header-content">
+      <h1>Complete Your Profile</h1>
+      <p>As a new user, please enter your detailed client information to access lending services.</p>
+    </div>
+  </header>
+
+  <main class="page-content">
+
+    <app-client-create-form
+      (formSubmitted)="onCreateProfile($event)"
+      (formCanceled)="onCancel()">
+    </app-client-create-form>
+  </main>
+
+</div>

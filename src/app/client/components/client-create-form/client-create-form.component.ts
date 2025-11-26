@@ -16,8 +16,8 @@ import {MatIconModule} from '@angular/material/icon'; // <--- NUEVO: Para iconos
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatCardModule, // Importante
-    MatIconModule  // Importante
+    MatCardModule,
+    MatIconModule
   ],
   templateUrl: './client-create-form.component.html',
   styleUrl: './client-create-form.component.scss'

@@ -4,17 +4,18 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSort, MatSortModule} from '@angular/material/sort';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import {MatCardModule} from '@angular/material/card'; // INDISPENSABLE
-import {MatTooltipModule} from '@angular/material/tooltip'; // EXCELENTE UX
+import {MatCardModule} from '@angular/material/card';
+import {MatTooltipModule} from '@angular/material/tooltip';
 import {CommonModule} from '@angular/common';
-import {ClientCreateFormComponent} from '../../components/client-create-form/client-create-form.component';
+
+// Nota: ClientCreateFormComponent ya no es necesario aquí.
 import {Client} from '../../model/client.entity';
 import {ClientsService} from '../../services/clients.service';
-import {CreateClientRequest} from '../../model/create-client.request';
+import {CreateClientRequest} from '../../model/create-client.request'; // Se mantiene solo por si se usa en el servicio, pero no en este componente
 
 @Component({
   selector: 'app-client-management',
-  standalone: true, // Arquitectura moderna
+  standalone: true,
   imports: [
     CommonModule,
     MatTableModule,
@@ -24,7 +25,7 @@ import {CreateClientRequest} from '../../model/create-client.request';
     MatButtonModule,
     MatCardModule,
     MatTooltipModule,
-    ClientCreateFormComponent
+    // Eliminado: ClientCreateFormComponent
   ],
   templateUrl: './client-management.component.html',
   styleUrl: './client-management.component.scss'
@@ -35,8 +36,7 @@ export class ClientManagementComponent implements OnInit {
   displayedColumns: string[] = ['id', 'fullName', 'email', 'dni', 'city', 'actions'];
   dataSource = new MatTableDataSource<Client>();
 
-  // Estado de la vista
-  isCreating = false;
+  // Eliminado: isCreating = false; <-- Ya no se usa
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -55,22 +55,6 @@ export class ClientManagementComponent implements OnInit {
     });
   }
 
-  onClientCreated(clientData: CreateClientRequest) {
-    this.clientsService.create(clientData).subscribe({
-      next: (newClient) => {
-        console.log('Client created:', newClient);
-        this.isCreating = false; // Volver a la lista automáticamente
-        this.getAllClients();    // Refrescar datos
-      },
-      error: (err) => console.error('Error creating client:', err)
-    });
-  }
-
-  onCancelCreation() {
-    this.isCreating = false; // El usuario canceló, volvemos a la lista
-  }
-
-  startCreation() {
-    this.isCreating = true; // El usuario quiere crear, mostramos formulario
-  }
+  // Eliminadas las funciones onClientCreated, onCancelCreation, y startCreation.
+  // Este componente es ahora solo de visualización y gestión.
 }

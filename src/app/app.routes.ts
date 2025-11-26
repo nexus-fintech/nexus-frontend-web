@@ -9,6 +9,7 @@ import { authenticationGuard } from './iam/services/authentication.guard';
 import { ClientManagementComponent } from './client/pages/client-management/client-management.component';
 import { LoanApplicationComponent } from './loan/pages/loan-application/loan-application.component';
 import { LoanEvaluationComponent } from './loan/pages/loan-evaluation/loan-evaluation.component';
+import {RegisterProfileComponent} from './client/components/register-profile/register-profile.component';
 
 export const routes: Routes = [
   // --- Public Routes ---
@@ -18,6 +19,7 @@ export const routes: Routes = [
   // --- Authentication Routes ---
   { path: 'sign-in', component: SignInComponent, title: 'Nexus | Sign In' },
   { path: 'sign-up', component: SignUpComponent, title: 'Nexus | Sign Up' },
+  { path: 'register-profile', component: RegisterProfileComponent, title: 'Nexus | Register profile' },
 
   // --- Protected Routes (Require Login) ---
   { path: 'clients', component: ClientManagementComponent, canActivate: [authenticationGuard], title: 'Nexus | Client Management' },
