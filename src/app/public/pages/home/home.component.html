@@ -1,1 +1,77 @@
-<p>home works!</p>
+<div class="page-container">
+
+  <div class="hero-section">
+    <div class="hero-content">
+      <h1>Welcome to Nexus Finance</h1>
+      <p class="hero-subtitle">
+        Enterprise-grade microcredit management platform powered by Artificial Intelligence.
+        Streamline your lending lifecycle from request to approval.
+      </p>
+
+      <div class="hero-actions">
+        <button mat-raised-button color="primary" routerLink="/loans/apply" class="cta-btn">
+          Get Started
+        </button>
+        <button mat-stroked-button class="secondary-btn" routerLink="/about">
+          Learn More
+        </button>
+      </div>
+    </div>
+
+    <mat-icon class="hero-icon">analytics</mat-icon>
+  </div>
+
+  <div class="features-grid">
+
+    <!-- Card 1: Clients -->
+    <mat-card class="feature-card border-blue" routerLink="/clients">
+      <mat-card-header>
+        <div mat-card-avatar class="avatar-icon blue">
+          <mat-icon>group</mat-icon>
+        </div>
+        <mat-card-title>Client Management</mat-card-title>
+        <mat-card-subtitle>CRM Core</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Register and manage detailed client profiles securely. Integrated with DNI validation and quick search.</p>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-button color="primary">Manage Clients</button>
+      </mat-card-actions>
+    </mat-card>
+
+    <!-- Card 2: Loans -->
+    <mat-card class="feature-card border-green" routerLink="/loans/apply">
+      <mat-card-header>
+        <div mat-card-avatar class="avatar-icon green">
+          <mat-icon>payments</mat-icon>
+        </div>
+        <mat-card-title>Loan Processing</mat-card-title>
+        <mat-card-subtitle>Financial Core</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Create loan requests with flexible terms. Automated amortization schedule generation.</p>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-button color="primary">New Application</button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card class="feature-card border-purple" routerLink="/loans/evaluate">
+      <mat-card-header>
+        <div mat-card-avatar class="avatar-icon purple">
+          <mat-icon>psychology</mat-icon>
+        </div>
+        <mat-card-title>AI Risk Engine</mat-card-title>
+        <mat-card-subtitle>Intelligence</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Advanced credit scoring using Python & Pandas. Evaluates income, debt, and age instantly.</p>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-button color="primary">Evaluate Risk</button>
+      </mat-card-actions>
+    </mat-card>
+
+  </div>
+</div>

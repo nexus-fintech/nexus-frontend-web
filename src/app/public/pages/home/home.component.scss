@@ -1,0 +1,123 @@
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+// === HERO SECTION ===
+.hero-section {
+  // Degradado profesional Slate-800 a Slate-700
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  color: white;
+  border-radius: 16px;
+  padding: 48px;
+  margin-bottom: 48px;
+  position: relative; // Para posicionar el icono decorativo
+  overflow: hidden;   // Para cortar el icono si se sale
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hero-content {
+  max-width: 600px;
+  z-index: 1; // Para estar encima del icono
+
+  h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+
+  .hero-subtitle {
+    font-size: 1.125rem;
+    color: #cbd5e1; // Slate-300
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+
+  .cta-btn {
+    padding: 8px 24px;
+    font-size: 1rem;
+  }
+
+  .secondary-btn {
+    color: white;
+    border-color: rgba(255, 255, 255, 0.3);
+    padding: 8px 24px;
+  }
+}
+
+.hero-icon {
+  // Icono gigante decorativo
+  font-size: 200px;
+  width: 200px;
+  height: 200px;
+  opacity: 0.1;
+  position: absolute;
+  right: -20px;
+  bottom: -40px;
+  transform: rotate(-15deg);
+  pointer-events: none; // No interferir con clicks
+
+  // Ocultar en móviles
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+// === FEATURE CARDS ===
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); // 3 columnas iguales
+  gap: 24px;
+
+  // Responsive: 1 columna en móvil
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.feature-card {
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  height: 100%; // Todas las tarjetas del mismo alto
+  border-top-width: 4px;
+  border-top-style: solid;
+
+  &:hover {
+    transform: translateY(-4px); // Efecto de elevación
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+
+  // Colores de borde específicos
+  &.border-blue { border-top-color: #3b82f6; }
+  &.border-green { border-top-color: #22c55e; }
+  &.border-purple { border-top-color: #a855f7; }
+
+  p {
+    color: #475569;
+    line-height: 1.5;
+    margin-top: 16px;
+  }
+}
+
+// Iconos circulares de las tarjetas
+.avatar-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+
+  &.blue { color: #3b82f6; background-color: #eff6ff; }
+  &.green { color: #22c55e; background-color: #f0fdf4; }
+  &.purple { color: #a855f7; background-color: #faf5ff; }
+}
