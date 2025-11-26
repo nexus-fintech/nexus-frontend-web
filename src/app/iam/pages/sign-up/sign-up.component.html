@@ -1,0 +1,55 @@
+<div class="auth-container">
+
+  <mat-card class="auth-card">
+
+    <mat-card-header class="auth-header">
+      <div class="logo-container">
+        <mat-icon>person_add</mat-icon>
+      </div>
+      <mat-card-title>Create Account</mat-card-title>
+      <mat-card-subtitle>Join Nexus Finance today</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content class="auth-content">
+
+      <form [formGroup]="form" (submit)="onSubmit()" class="auth-form">
+
+        <!-- Campo Username -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Username</mat-label>
+          <mat-icon matPrefix>account_circle</mat-icon>
+          <input matInput placeholder="Choose a username" formControlName="username">
+          @if (isInvalidControl(form,'username')) {
+            <mat-error>{{ errorMessagesForControl(form,'username')}}</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Campo Password -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <mat-icon matPrefix>vpn_key</mat-icon>
+          <input matInput type="password" placeholder="Create a strong password" formControlName="password">
+          <mat-hint align="end">Min 6 characters</mat-hint>
+          @if (isInvalidControl(form,'password')) {
+            <mat-error>{{ errorMessagesForControl(form,'password')}}</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="actions">
+          <button mat-flat-button color="primary" class="submit-btn">
+            Create Account
+          </button>
+        </div>
+
+        <div class="login-link">
+          <span>Already have an account?</span>
+          <a routerLink="/sign-in">Sign In</a>
+        </div>
+
+      </form>
+
+    </mat-card-content>
+
+  </mat-card>
+
+</div>

@@ -1,0 +1,121 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh; // Altura considerable para centrar verticalmente
+  padding: 24px;
+  background-color: transparent; // El fondo gris ya viene del app.component
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 400px; // Ancho estándar para login
+  overflow: hidden; // Para respetar bordes redondeados
+  border-radius: 12px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.auth-header {
+  background-color: #f8fafc; // Slate-50
+  padding: 32px 24px 24px;   // Espacio generoso
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-bottom: 1px solid #e2e8f0;
+
+  .logo-container {
+    background-color: #e0e7ff; // Indigo muy claro
+    color: #312e81;            // Indigo oscuro
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+
+    mat-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  mat-card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 4px;
+  }
+
+  mat-card-subtitle {
+    font-size: 0.95rem;
+    color: #64748b;
+  }
+}
+
+.auth-content {
+  padding: 32px 24px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+mat-icon[matPrefix] {
+  margin-right: 8px;
+  color: #94a3b8;
+}
+
+.actions {
+  margin-top: 16px;
+
+  .submit-btn {
+    width: 100%; // Botón ancho completo
+    padding: 24px 0; // Más alto para fácil click
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 0; // Centrar texto verticalmente
+  }
+}
+
+.forgot-password {
+  text-align: center;
+  margin-top: 16px;
+
+  a {
+    color: #64748b;
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: color 0.2s;
+
+    &:hover {
+      color: #3b82f6; // Azul al pasar el mouse
+      text-decoration: underline;
+    }
+  }
+}
+
+.auth-footer {
+  background-color: #f8fafc;
+  padding: 12px;
+  text-align: center;
+  border-top: 1px solid #e2e8f0;
+
+  p {
+    margin: 0;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+}

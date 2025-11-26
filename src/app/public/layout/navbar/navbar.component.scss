@@ -12,10 +12,7 @@
   font-weight: 700;
   font-size: 1.1rem;
   letter-spacing: 0.5px;
-
-  mat-icon {
-    margin-right: 8px;
-  }
+  mat-icon { margin-right: 8px; }
 }
 
 .spacer {
@@ -25,10 +22,14 @@
 .desktop-nav {
   display: none;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 
-  @media (min-width: 768px) {
+  @media (min-width: 960px) {
     display: flex;
+  }
+
+  a[mat-button], button[mat-button] {
+    font-weight: 500;
   }
 
   .active-link {
@@ -38,24 +39,52 @@
 
   .accent-btn {
     background-color: rgba(255, 255, 255, 0.1);
-    color: #a7f3d0; // Un verde claro suave
+    color: #a7f3d0;
     border: 1px solid rgba(167, 243, 208, 0.3);
-    margin-left: 8px;
+    margin-right: 8px;
 
-    mat-icon {
-      margin-right: 4px;
-    }
+    mat-icon { margin-right: 4px; }
+    &:hover { background-color: rgba(255, 255, 255, 0.2); }
+  }
 
+  .vertical-divider {
+    height: 24px;
+    width: 1px;
+    background-color: rgba(255, 255, 255, 0.3);
+    margin: 0 12px;
+  }
+
+
+  .auth-buttons {
+    display: flex;
+    gap: 8px;
+  }
+
+  .signup-btn {
+    border-color: white;
+    color: white;
+    font-weight: 600;
     &:hover {
-      background-color: rgba(255, 255, 255, 0.2);
+      background-color: rgba(255,255,255, 0.1);
+    }
+  }
+
+  .user-profile {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .welcome-text {
+      font-size: 0.9rem;
+      font-weight: 500;
+      opacity: 0.9;
     }
   }
 }
 
 .mobile-menu-btn {
   display: block;
-
-  @media (min-width: 768px) {
+  @media (min-width: 960px) {
     display: none;
   }
 }

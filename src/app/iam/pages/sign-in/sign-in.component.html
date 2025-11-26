@@ -1,0 +1,57 @@
+<div class="auth-container">
+
+  <mat-card class="auth-card">
+
+    <mat-card-header class="auth-header">
+      <div class="logo-container">
+        <mat-icon>lock_person</mat-icon>
+      </div>
+      <mat-card-title>Welcome Back</mat-card-title>
+      <mat-card-subtitle>Sign in to Nexus Finance</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content class="auth-content">
+
+      <form [formGroup]="form" (submit)="onSubmit()" class="auth-form">
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Username</mat-label>
+          <mat-icon matPrefix>person</mat-icon>
+          <input matInput placeholder="Enter your username" formControlName="username" autocomplete="username">
+
+          @if (isInvalidControl(form,'username')) {
+            <mat-error>{{ errorMessagesForControl(form,'username')}}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <mat-icon matPrefix>lock</mat-icon>
+          <input matInput type="password" placeholder="Enter your password" formControlName="password" autocomplete="current-password">
+
+          @if (isInvalidControl(form,'password')) {
+            <mat-error>{{ errorMessagesForControl(form,'password')}}</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="actions">
+          <button mat-flat-button color="primary" class="submit-btn">
+            Sign In
+          </button>
+        </div>
+
+        <div class="forgot-password">
+          <a href="#">Forgot your password?</a>
+        </div>
+
+      </form>
+
+    </mat-card-content>
+
+    <mat-card-footer class="auth-footer">
+      <p>Protected by Nexus Security Systems</p>
+    </mat-card-footer>
+
+  </mat-card>
+
+</div>
