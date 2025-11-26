@@ -1,45 +1,36 @@
-<mat-toolbar color="primary" class="mat-elevation-z4 px-4">
+<mat-toolbar color="primary" class="app-toolbar">
 
-  <!-- Logo / Título -->
-  <button mat-button routerLink="/home" class="font-bold text-lg tracking-wide flex items-center gap-2">
+  <button mat-button routerLink="/home" class="brand-logo">
     <mat-icon>account_balance</mat-icon>
     <span>NEXUS FINANCE</span>
   </button>
 
-  <!-- Espaciador flexible -->
-  <span class="flex-1"></span>
+  <span class="spacer"></span>
 
-  <!-- Navegación Desktop (Oculta en móvil si usáramos responsive completo, aquí simplificado) -->
-  <div class="hidden md:flex gap-2 items-center">
+  <nav class="desktop-nav">
 
-    <!-- Link simple -->
-    <button mat-button routerLink="/home" routerLinkActive="bg-black/10">
+    <a mat-button routerLink="/home" routerLinkActive="active-link">
       Home
-    </button>
+    </a>
 
-    <!-- Bounded Context: CLIENTS -->
-    <button mat-button routerLink="/clients" routerLinkActive="bg-black/10">
+    <a mat-button routerLink="/clients" routerLinkActive="active-link">
       Clients
-    </button>
+    </a>
 
-    <!-- Bounded Context: LOANS (Con submenú visual o botones separados) -->
-    <!-- Opción A: Botones directos para MVP -->
-    <button mat-button routerLink="/loans/apply" routerLinkActive="bg-black/10">
+    <a mat-button routerLink="/loans/apply" routerLinkActive="active-link">
       Request Loan
-    </button>
+    </a>
 
-    <button mat-button routerLink="/loans/evaluate" routerLinkActive="bg-black/10" color="accent" class="bg-white/10 text-white">
-      <mat-icon class="mr-1">gavel</mat-icon> Risk Engine
-    </button>
+    <a mat-button routerLink="/loans/evaluate" routerLinkActive="active-link" class="accent-btn">
+      <mat-icon>gavel</mat-icon> Risk Engine
+    </a>
 
-    <!-- Link About -->
-    <button mat-icon-button routerLink="/about" aria-label="About Nexus Finance">
+    <button mat-icon-button routerLink="/about" aria-label="About">
       <mat-icon>info</mat-icon>
     </button>
-  </div>
+  </nav>
 
-  <!-- Botón Menú Móvil (Placeholder visual) -->
-  <button mat-icon-button class="md:hidden">
+  <button mat-icon-button class="mobile-menu-btn">
     <mat-icon>menu</mat-icon>
   </button>
 

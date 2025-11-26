@@ -1,15 +1,61 @@
-.mat-toolbar {
+.app-toolbar {
   position: sticky;
   top: 0;
   z-index: 1000;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
 }
 
-.active-link {
-  background-color: rgba(255, 255, 255, 0.15);
-  border-radius: 4px;
+.brand-logo {
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+
+  mat-icon {
+    margin-right: 8px;
+  }
 }
 
-:host {
+.spacer {
+  flex: 1 1 auto;
+}
+
+.desktop-nav {
+  display: none;
+  align-items: center;
+  gap: 8px;
+
+  @media (min-width: 768px) {
+    display: flex;
+  }
+
+  .active-link {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+  }
+
+  .accent-btn {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #a7f3d0; // Un verde claro suave
+    border: 1px solid rgba(167, 243, 208, 0.3);
+    margin-left: 8px;
+
+    mat-icon {
+      margin-right: 4px;
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+
+.mobile-menu-btn {
   display: block;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
 }
