@@ -10,27 +10,39 @@
   <nav class="desktop-nav">
 
     <a mat-button routerLink="/home" routerLinkActive="active-link">Home</a>
-    <a mat-button routerLink="/clients" routerLinkActive="active-link">Clients</a>
-    <a mat-button routerLink="/loans/apply" routerLinkActive="active-link">Request Loan</a>
 
-    <a mat-button routerLink="/loans/evaluate" routerLinkActive="active-link" class="accent-btn">
-      <mat-icon>gavel</mat-icon> Risk Engine
-    </a>
+    @if (isAdmin) {
+      <a mat-button routerLink="/clients" routerLinkActive="active-link">Clients</a>
+    }
+
+    @if (isClient) {
+      <a mat-button routerLink="/loans/apply" routerLinkActive="active-link">Request Loan</a>
+    }
+
+    @if (isAdmin) {
+      <a mat-button routerLink="/loans/evaluate" routerLinkActive="active-link" class="accent-btn">
+        <mat-icon>gavel</mat-icon> Risk Engine
+      </a>
+    }
+
+    <button mat-icon-button routerLink="/about" aria-label="About">
+      <mat-icon>info</mat-icon>
+    </button>
 
     <div class="vertical-divider"></div>
 
     @if (isSignedIn) {
       <div class="user-profile">
         <span class="welcome-text">Hi, {{ currentUserName }}</span>
+
         <button mat-icon-button [matMenuTriggerFor]="userMenu" aria-label="User menu">
           <mat-icon>account_circle</mat-icon>
         </button>
 
         <mat-menu #userMenu="matMenu">
-          <button mat-menu-item disabled>
-            <mat-icon>person</mat-icon>
-            <span>Profile</span>
-          </button>
+          <div mat-menu-item disabled class="role-badge">
+            <small>{{ isAdmin ? 'Administrator' : 'Client' }}</small>
+          </div>
           <button mat-menu-item (click)="onSignOut()">
             <mat-icon>logout</mat-icon>
             <span>Sign Out</span>

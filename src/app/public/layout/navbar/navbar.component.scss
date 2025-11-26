@@ -30,6 +30,7 @@
 
   a[mat-button], button[mat-button] {
     font-weight: 500;
+    font-size: 14px;
   }
 
   .active-link {
@@ -54,14 +55,13 @@
     margin: 0 12px;
   }
 
-
   .auth-buttons {
     display: flex;
     gap: 8px;
   }
 
   .signup-btn {
-    border-color: white;
+    border-color: rgba(255,255,255, 0.8);
     color: white;
     font-weight: 600;
     &:hover {
@@ -80,6 +80,14 @@
       opacity: 0.9;
     }
   }
+}
+
+.role-badge {
+  opacity: 0.7;
+  font-style: italic;
+  font-size: 12px;
+  height: 32px !important;
+  line-height: 32px !important;
 }
 
 .mobile-menu-btn {
