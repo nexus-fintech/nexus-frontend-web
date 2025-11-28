@@ -6,6 +6,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import {Subscription} from 'rxjs';
 import {AuthenticationService} from '../../../iam/services/authentication.service';
+import {ClientsService} from '../../../client/services/clients.service';
 
 @Component({
   selector: 'app-navbar',
@@ -28,18 +29,27 @@ export class NavbarComponent implements OnInit, OnDestroy {
   isSignedIn: boolean = false;
   currentRoles: string[] = [];
 
+  isProfileComplete: boolean = true;
+
   private authSubscription!: Subscription;
   private userSubscription!: Subscription;
   private roleSubscription!: Subscription;
+  private clientSubscription!: Subscription;
 
   constructor(
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private clientsService: ClientsService
   ) {}
 
   ngOnInit(): void {
     this.authSubscription = this.authenticationService.isSignedIn.subscribe(
-      (isSignedIn) => this.isSignedIn = isSignedIn
+      (isSignedIn) => {
+        this.isSignedIn = isSignedIn;
+        if (isSignedIn) {
+          this.checkProfileCompletion();
+        }
+      }
     );
 
     this.userSubscription = this.authenticationService.currentUsername.subscribe(
@@ -55,6 +65,25 @@ export class NavbarComponent implements OnInit, OnDestroy {
     if (this.authSubscription) this.authSubscription.unsubscribe();
     if (this.userSubscription) this.userSubscription.unsubscribe();
     if (this.roleSubscription) this.roleSubscription.unsubscribe();
+    if (this.clientSubscription) this.clientSubscription.unsubscribe();
+  }
+
+  /**
+   * Checks whether the current user (if they are a CLIENT) has their profile completed.
+   */
+  checkProfileCompletion(): void {
+    if (!this.isClient) return;
+
+    this.authenticationService.currentUserId.subscribe(userId => {
+      if (userId) {
+        this.clientSubscription = this.clientsService.getClientByUserId(userId).subscribe({
+          next: (profile) => {
+            this.isProfileComplete = !!profile;
+          },
+          error: () => this.isProfileComplete = false
+        });
+      }
+    }).unsubscribe();
   }
 
   get isAdmin(): boolean {
@@ -65,14 +94,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     return this.currentRoles.includes('ROLE_CLIENT');
   }
 
-
-  onSignIn() {
-    this.router.navigate(['/sign-in']);
-  }
-
-  onSignUp() {
-    this.router.navigate(['/sign-up']);
-  }
+  onSignIn() { this.router.navigate(['/sign-in']); }
+  onSignUp() { this.router.navigate(['/sign-up']); }
 
   onSignOut() {
     this.authenticationService.signOut();

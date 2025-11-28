@@ -11,14 +11,29 @@
 
     <a mat-button routerLink="/home" routerLinkActive="active-link">Home</a>
 
+    <!-- VISTA ADMIN -->
     @if (isAdmin) {
       <a mat-button routerLink="/clients" routerLinkActive="active-link">Clients</a>
     }
 
+    <!-- VISTA CLIENTE -->
     @if (isClient) {
-      <a mat-button routerLink="/loans/apply" routerLinkActive="active-link">Request Loan</a>
+      <!-- 1. Enlace a Mis Préstamos (Siempre visible si es cliente) -->
+      <a mat-button routerLink="/my-loans" routerLinkActive="active-link">My Loans</a>
+
+      <!-- 2. Botón de Acción Principal (Condicional) -->
+      @if (isProfileComplete) {
+        <!-- Caso A: Perfil Listo -> Puede pedir préstamo -->
+        <a mat-button routerLink="/loans/apply" routerLinkActive="active-link">Request Loan</a>
+      } @else {
+        <!-- Caso B: Perfil Incompleto -> Alerta de Onboarding -->
+        <a mat-button routerLink="/register-profile" class="onboarding-alert-btn">
+          <mat-icon>warning</mat-icon> Complete Profile
+        </a>
+      }
     }
 
+    <!-- VISTA ADMIN: Risk Engine -->
     @if (isAdmin) {
       <a mat-button routerLink="/loans/evaluate" routerLinkActive="active-link" class="accent-btn">
         <mat-icon>gavel</mat-icon> Risk Engine
@@ -31,6 +46,7 @@
 
     <div class="vertical-divider"></div>
 
+    <!-- SECCIÓN DE USUARIO -->
     @if (isSignedIn) {
       <div class="user-profile">
         <span class="welcome-text">Hi, {{ currentUserName }}</span>

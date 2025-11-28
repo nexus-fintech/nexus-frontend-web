@@ -38,6 +38,25 @@
     border-radius: 4px;
   }
 
+  // BOTÓN DE ALERTA PARA ONBOARDING (Nuevo)
+  .onboarding-alert-btn {
+    background-color: #fef3c7; // Fondo Amarillo Claro
+    color: #b45309;            // Texto Marrón
+    font-weight: 700;
+    border-radius: 4px;
+    padding: 0 12px;
+    margin-left: 8px;
+
+    mat-icon {
+      margin-right: 4px;
+      color: #b45309;
+    }
+
+    &:hover {
+      background-color: #fde047; // Amarillo más intenso al pasar el mouse
+    }
+  }
+
   .accent-btn {
     background-color: rgba(255, 255, 255, 0.1);
     color: #a7f3d0;
