@@ -1,0 +1,74 @@
+.table-container {
+  overflow-x: auto; // Permite scroll horizontal en móviles
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background-color: white;
+}
+
+.full-width-table {
+  width: 100%;
+  min-width: 700px; // Mínimo ancho para que la tabla no se vea aplastada
+}
+
+.table-header {
+  background-color: #f8fafc; // Slate-50
+  color: #475569; // Slate-600
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  padding: 16px 8px;
+}
+
+.table-row {
+  transition: background-color 0.2s;
+  height: 50px; // Altura fija
+  border-bottom: 1px solid #f1f5f9; // Separador suave
+
+  &:hover {
+    background-color: #f8fafc;
+  }
+}
+
+.cell-amount {
+  font-family: monospace;
+}
+
+.total-payment {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.align-right {
+  text-align: right;
+  padding-right: 16px;
+}
+
+.align-center {
+  text-align: center;
+}
+
+.total-header {
+  color: #1e293b;
+  font-size: 0.85rem;
+}
+
+// === CHIPS DE ESTADO ===
+.status-chip {
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 0.65rem; // XS
+  font-weight: 700;
+  text-transform: uppercase;
+  display: inline-block;
+  min-width: 70px;
+}
+
+.status-paid {
+  background-color: #dcfce7; // Green-100
+  color: #15803d; // Green-700
+}
+
+.status-pending {
+  background-color: #e2e8f0; // Gray-100
+  color: #475569; // Gray-700
+}

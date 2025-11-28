@@ -12,7 +12,7 @@ import {AuthenticationService} from '../../../iam/services/authentication.servic
 import {ClientsService} from '../../../client/services/clients.service';
 import {Client} from '../../../client/model/client.entity';
 import {LoanRequest} from '../../model/loan-request.request';
-import {MatProgressSpinner, MatSpinner} from '@angular/material/progress-spinner';
+import {MatProgressSpinner} from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-loan-application',
@@ -37,39 +37,37 @@ export class LoanApplicationComponent implements OnInit {
   constructor(
     private router: Router,
     private loansService: LoansService,
-    private authService: AuthenticationService, // Para obtener el UserId
-    private clientsService: ClientsService      // Para obtener el ClientId
+    private authService: AuthenticationService,
+    private clientsService: ClientsService
   ) {}
 
   ngOnInit(): void {
-    // 1. Obtener el ID del usuario logueado (IAM)
+    // 1. Get the logged-in user's ID (IAM)
     this.authSubscription = this.authService.currentUserId.pipe(
       take(1),
-      // 2. Usar ese ID para buscar el perfil de cliente
+      // 2. Use that ID to fetch the client profile
       switchMap(userId => {
         if (userId && userId > 0) {
           return this.clientsService.getClientByUserId(userId);
         }
-        // Si no hay UserId, retornamos un observable que emite null
         return [null];
       })
     ).subscribe({
       next: (clientProfile: Client | null) => {
         if (clientProfile && clientProfile.id) {
-          // 3. Si se encuentra el perfil, guardamos el ID para inyectarlo en el formulario
+          // 3. If the profile is found, store the ID to inject it into the form
           this.clientIdToInject = clientProfile.id;
           console.log(`Loan Application: Found Client ID ${this.clientIdToInject} for injection.`);
         } else {
-          // Esto no debería pasar gracias al OnboardingGuard, pero es una defensa extra.
+          // This should not happen thanks to the OnboardingGuard, but it's an extra safeguard.
           console.error("Loan Application: Client profile not found despite being logged in.");
-          // Redirigir al home o a error si el ID no se encuentra.
+          // Redirect to home or an error page if the ID is not found.
         }
         this.isLoading = false;
       },
       error: (err) => {
         console.error("Error fetching client ID for loan application.", err);
         this.isLoading = false;
-        // Podríamos redirigir a una página de error de sistema
       }
     });
   }
@@ -84,12 +82,10 @@ export class LoanApplicationComponent implements OnInit {
     this.loansService.create(loanData).subscribe({
       next: (response) => {
         console.log('Loan submitted successfully!', response);
-        // UX: Mover al usuario a una pantalla de confirmación o de estado de préstamo
         this.router.navigate(['/home']).then();
       },
       error: (error) => {
         console.error('Error submitting loan:', error);
-        // UX: Mostrar error al usuario
       }
     });
   }

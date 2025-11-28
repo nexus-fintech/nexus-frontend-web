@@ -1,0 +1,64 @@
+<div class="page-container">
+
+  <button mat-button (click)="goBack()" class="back-button">
+    <mat-icon>arrow_back</mat-icon> Back to List
+  </button>
+
+  @if (loan) {
+    <div class="summary-box">
+      <div class="summary-header">
+        <div>
+          <h1 class="loan-title">
+            Loan #{{loan.id}}
+            <span class="status-badge"
+                  [ngClass]="{
+                      'status-active': loan.status === 'ACTIVE',
+                      'status-requested': loan.status === 'REQUESTED',
+                      'status-rejected': loan.status === 'REJECTED'
+                  }">
+              {{loan.status}}
+            </span>
+          </h1>
+          <p class="disbursement-date">Disbursed on: {{loan.disbursementDate | date:'fullDate'}}</p>
+        </div>
+
+        <div class="total-amount-display">
+          <div class="label">Total Amount</div>
+          <div class="value">{{loan.requestedAmount | currency}}</div>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="metadata-grid">
+        <div class="metadata-item">
+          <div class="label">Interest Rate</div>
+          <div class="value">{{loan.annualInterestRate * 100}}% <span class="unit">Annual</span></div>
+        </div>
+        <div class="metadata-item">
+          <div class="label">Term</div>
+          <div class="value">{{loan.termInMonths}} <span class="unit">Months</span></div>
+        </div>
+        <div class="metadata-item">
+          <div class="label">Client ID</div>
+          <div class="value-id">#{{loan.clientId}}</div>
+        </div>
+      </div>
+    </div>
+
+    @if (loan.schedule && loan.schedule.length > 0) {
+      <h2 class="schedule-title">Repayment Schedule</h2>
+      <app-amortization-table [schedule]="loan.schedule"></app-amortization-table>
+    } @else {
+      <div class="empty-schedule-state">
+        <mat-icon>info_outline</mat-icon>
+        No schedule available. This loan might be in REQUESTED status.
+      </div>
+    }
+
+  } @else if (isLoading) {
+    <div class="loading-state">Loading loan details...</div>
+  } @else {
+    <div class="error-state">Loan not found.</div>
+  }
+</div>
