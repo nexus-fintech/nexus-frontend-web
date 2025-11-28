@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import {environment} from "../../../environments/environment";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {Router} from "@angular/router";
 import {SignInRequest} from "../model/sign-in.request";
 import {SignInResponse} from "../model/sign-in.response";
 import {SignUpRequest} from "../model/sign-up.request";
 import {SignUpResponse} from "../model/sign-up.response";
 import {ClientsService} from '../../client/services/clients.service';
-// Importar el servicio de clientes para verificar la existencia del perfil
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +17,6 @@ export class AuthenticationService {
   basePath: string = `${environment.serverBasePath}`;
   httpOptions = { headers: new HttpHeaders({'Content-type': 'application/json'}) };
 
-  // Estados Reactivos
   private signedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private signedInUserId: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   private signedInUsername: BehaviorSubject<string> = new BehaviorSubject<string>('');
@@ -27,7 +25,7 @@ export class AuthenticationService {
   constructor(
     private router: Router,
     private http: HttpClient,
-    private clientsService: ClientsService // INYECCIÓN DEL SERVICIO DE CLIENTES
+    private clientsService: ClientsService
   ) {
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
@@ -51,26 +49,21 @@ export class AuthenticationService {
 
 
   get isSignedIn() { return this.signedIn.asObservable(); }
+
+  get isUserSignedIn(): boolean {
+    return this.signedIn.value;
+  }
+
   get currentUserId() { return this.signedInUserId.asObservable(); }
   get currentUsername() { return this.signedInUsername.asObservable(); }
   get currentRoles() { return this.signedInRoles.asObservable(); }
   hasRole(role: string): boolean { return this.signedInRoles.value.includes(role); }
 
 
-  // --- Acciones ---
+  // --- Actions ---
 
-  signUp(signUpRequest: SignUpRequest) {
-    return this.http.post<SignUpResponse>(`${this.basePath}/authentication/sign-up`, signUpRequest, this.httpOptions)
-      .subscribe({
-        next: (response) => {
-          console.log(`Signed up as ${response.username}. Redirecting to Sign In.`);
-          // Se mantiene la redirección a Sign In (flujo de autenticación base)
-          this.router.navigate(['/sign-in']).then();
-        },
-        error: (error) => {
-          console.error(`Error while signing up: ${error}`);
-        }
-      });
+  signUp(signUpRequest: SignUpRequest): Observable<SignUpResponse> {
+    return this.http.post<SignUpResponse>(`${this.basePath}/authentication/sign-up`, signUpRequest, this.httpOptions);
   }
 
   signIn(signInRequest: SignInRequest) {
@@ -79,7 +72,7 @@ export class AuthenticationService {
         next: (response) => {
           const rolesToStore = response.roles || [];
 
-          // 1. Guardar estado de la sesión (sin redirección)
+          // 1. Save session state
           this.signedIn.next(true);
           this.signedInUserId.next(response.id);
           this.signedInUsername.next(response.username);
@@ -92,35 +85,35 @@ export class AuthenticationService {
 
           console.log(`Signed in as ${response.username} with roles: ${rolesToStore}`);
 
-          // LÓGICA DE REDIRECCIÓN INTELIGENTE
+          // SMART REDIRECTION LOGIC
 
-          // Caso 1: Administrador (No requiere chequeo de perfil)
+          // Case 1: Admin
           if (rolesToStore.includes('ROLE_ADMIN')) {
             console.log('Redirecting ADMIN to Home.');
             this.router.navigate(['/home']).then();
             return;
           }
 
-          // Caso 2: Cliente (Requiere chequeo de perfil de cliente)
+          // Case 2: Client (Requires client profile check)
           if (rolesToStore.includes('ROLE_CLIENT')) {
 
             const userId = response.id;
 
-            // **Petición Encadenada:** Chequear si el perfil del cliente existe
+            // **Chained Request:** Check if client profile exists
             this.clientsService.getClientByUserId(userId).subscribe({
               next: (clientProfile) => {
                 if (clientProfile) {
-                  // Perfil EXISTE: Redirigir al Home
+                  // Profile EXISTS: Redirect to Home
                   console.log('Client profile found. Redirecting to Home.');
                   this.router.navigate(['/home']).then();
                 } else {
-                  // Perfil NO EXISTE: Redirigir a la página de Onboarding
+                  // Profile DOES NOT EXIST: Redirect to Onboarding page
                   console.warn('Client profile MISSING. Redirecting to Onboarding.');
                   this.router.navigate(['/register-profile']).then();
                 }
               },
               error: (err) => {
-                // Si falla el chequeo de red, por seguridad, mandamos a completar el perfil
+                // If profile check fails, for safety, redirect to complete profile
                 console.error('Error checking client profile:', err);
                 this.router.navigate(['/register-profile']).then();
               }
@@ -128,7 +121,7 @@ export class AuthenticationService {
             return;
           }
 
-          // Caso 3: Rol Desconocido o Sin Roles
+          // Case 3: Unknown role or no roles
           console.log('User role unknown. Redirecting to Home.');
           this.router.navigate(['/home']).then();
         },
