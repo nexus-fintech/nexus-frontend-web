@@ -1,0 +1,82 @@
+<div class="page-container">
+
+  <header class="page-header">
+    <div class="header-content">
+      <h1>My Loans History</h1>
+      <p>View the status and amortization schedules for your active and past requests.</p>
+    </div>
+  </header>
+
+  <main class="page-content">
+    <mat-card class="list-card">
+
+      @if (isLoading) {
+        <div class="loading-state">
+          <mat-progress-spinner diameter="40"></mat-progress-spinner>
+            <p>Loading your loan history...</p>
+        </div>
+      } @else if (loansDataSource.data.length === 0) {
+        <div class="empty-state">
+          <mat-icon>account_balance_wallet</mat-icon>
+          <p>You have no active or requested loans.</p>
+          <button mat-flat-button color="accent" routerLink="/loans/apply">Request Your First Loan</button>
+        </div>
+      } @else {
+
+        <mat-card-content class="no-padding">
+          <table mat-table [dataSource]="loansDataSource" class="full-width-table">
+
+            <!-- ID -->
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef class="header-cell"> ID </th>
+              <td mat-cell *matCellDef="let loan" class="cell-id"> #{{loan.id}} </td>
+            </ng-container>
+
+            <!-- Amount -->
+            <ng-container matColumnDef="amount">
+              <th mat-header-cell *matHeaderCellDef class="header-cell align-right"> Amount </th>
+              <td mat-cell *matCellDef="let loan" class="cell-amount align-right"> ${{loan.requestedAmount}} </td>
+            </ng-container>
+
+            <!-- Rate -->
+            <ng-container matColumnDef="rate">
+              <th mat-header-cell *matHeaderCellDef class="header-cell"> Rate </th>
+              <td mat-cell *matCellDef="let loan"> {{loan.annualInterestRate * 100}}% </td>
+            </ng-container>
+
+            <!-- Term -->
+            <ng-container matColumnDef="term">
+              <th mat-header-cell *matHeaderCellDef class="header-cell"> Term </th>
+              <td mat-cell *matCellDef="let loan"> {{loan.termInMonths}}m </td>
+            </ng-container>
+
+            <!-- Status (CORRECCIÓN: Usar .toLowerCase() directamente) -->
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef class="header-cell align-center"> Status </th>
+              <td mat-cell *matCellDef="let loan" class="align-center">
+                <span class="status-badge" [ngClass]="loan.status.toLowerCase()">
+                  {{loan.status}}
+                </span>
+              </td>
+            </ng-container>
+
+            <!-- Actions (Solo ver detalle para Cliente) -->
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef class="header-cell align-right"> Action </th>
+              <td mat-cell *matCellDef="let loan" class="align-right">
+                <!-- Botón para ver el cronograma -->
+                <button mat-icon-button color="primary" [routerLink]="['/loans/detail', loan.id]" matTooltip="View Schedule Details">
+                  <mat-icon>receipt</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
+
+          </table>
+        </mat-card-content>
+      }
+    </mat-card>
+  </main>
+</div>
