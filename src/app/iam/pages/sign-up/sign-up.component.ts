@@ -3,13 +3,14 @@ import {BaseFormComponent} from "../../../shared/components/base-form.component"
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AuthenticationService} from "../../services/authentication.service";
 import {SignUpRequest} from "../../model/sign-up.request";
-
+import {SignInRequest} from "../../model/sign-in.request";
 import {MatCardModule} from "@angular/material/card";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {RouterLink} from "@angular/router";
+
 
 @Component({
   selector: 'app-sign-up',
@@ -50,7 +51,19 @@ export class SignUpComponent extends BaseFormComponent implements OnInit {
 
     const signUpRequest = new SignUpRequest(username, password, ['ROLE_CLIENT']);
 
-    this.authenticationService.signUp(signUpRequest);
-    this.submitted = true;
+    this.authenticationService.signUp(signUpRequest).subscribe({
+      next: () => {
+        console.log(`Sign up successful. Attempting autologin for: ${username}`);
+
+        const signInRequest = new SignInRequest(username, password);
+
+        this.authenticationService.signIn(signInRequest);
+        this.submitted = true;
+      },
+      error: (error) => {
+        console.error(`Registration failed: ${error}`);
+        this.submitted = true;
+      }
+    });
   }
 }
