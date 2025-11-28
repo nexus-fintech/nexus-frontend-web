@@ -8,9 +8,27 @@
   </header>
 
   <main class="page-content">
-    <app-loan-request-form
-      (formSubmitted)="onRequestSubmitted($event)">
-    </app-loan-request-form>
+
+    @if (isLoading) {
+      <div class="loading-state">
+        <mat-spinner diameter="50"></mat-spinner>
+        <p>Verifying client identity...</p>
+      </div>
+    }
+
+    @else if (clientIdToInject) {
+      <app-loan-request-form
+        [clientId]="clientIdToInject"
+        (formSubmitted)="onRequestSubmitted($event)">
+      </app-loan-request-form>
+    }
+
+    @else {
+      <div class="error-state">
+        <mat-icon>error_outline</mat-icon>
+        <p>System Error: Client ID could not be loaded. Please sign out and try again.</p>
+      </div>
+    }
   </main>
 
 </div>

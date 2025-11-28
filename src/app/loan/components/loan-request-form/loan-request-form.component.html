@@ -4,7 +4,7 @@
 
     <mat-card-header class="form-header">
       <div mat-card-avatar class="avatar-bg">
-        <mat-icon>monetization_on</mat-icon> <!-- Icono de dinero -->
+        <mat-icon>monetization_on</mat-icon>
       </div>
       <mat-card-title>Loan Details</mat-card-title>
       <mat-card-subtitle>Please verify the interest rate before submitting</mat-card-subtitle>
@@ -13,14 +13,16 @@
     <mat-card-content class="form-content">
       <form [formGroup]="loanForm" (ngSubmit)="onSubmit()" class="form-grid">
 
-        <mat-form-field appearance="outline">
-          <mat-label>Client ID</mat-label>
-          <mat-icon matPrefix>person</mat-icon>
-          <input matInput type="number" formControlName="clientId" placeholder="Ex. 1">
-          @if (isInvalidControl(loanForm, 'clientId')) {
-            <mat-error>{{ errorMessagesForControl(loanForm, 'clientId') }}</mat-error>
-          }
-        </mat-form-field>
+        <!-- **REEMPLAZO DE CLIENT ID** -->
+        <!-- Se muestra el ID del cliente logueado como texto de solo lectura -->
+        <div class="client-id-display full-width">
+          <mat-icon class="prefix-icon">person</mat-icon>
+          <div class="id-info">
+            <span class="label">Client ID (Read-Only)</span>
+            <span class="value">#{{ clientId }}</span>
+          </div>
+        </div>
+        <!-- Fin de Reemplazo -->
 
         <mat-form-field appearance="outline">
           <mat-label>Amount ($)</mat-label>
