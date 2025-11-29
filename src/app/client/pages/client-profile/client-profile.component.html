@@ -43,9 +43,12 @@
       <mat-card class="history-card">
         <div class="card-header-actions">
           <h3>Loan History</h3>
-          <button mat-flat-button color="primary" routerLink="/loans/apply">
+
+          <!-- BOTÓN MODIFICADO: Ahora pasa el ID del cliente en la URL -->
+          <button mat-flat-button color="primary" [routerLink]="['/loans/apply']" [queryParams]="{ clientId: client.id }">
             <mat-icon>add</mat-icon> New Loan
           </button>
+
         </div>
 
         <div class="table-container">

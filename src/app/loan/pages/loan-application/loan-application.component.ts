@@ -1,9 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {Router} from "@angular/router";
+import {Router, ActivatedRoute} from "@angular/router"; // Importamos ActivatedRoute
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
-import {Subscription, switchMap, take} from 'rxjs';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {Subscription, of} from 'rxjs';
+import {switchMap, take} from 'rxjs/operators';
 
 import {LoanRequestFormComponent} from '../../components/loan-request-form/loan-request-form.component';
 import {LoansService} from '../../services/loans.service';
@@ -12,7 +14,6 @@ import {AuthenticationService} from '../../../iam/services/authentication.servic
 import {ClientsService} from '../../../client/services/clients.service';
 import {Client} from '../../../client/model/client.entity';
 import {LoanRequest} from '../../model/loan-request.request';
-import {MatProgressSpinner} from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-loan-application',
@@ -22,12 +23,12 @@ import {MatProgressSpinner} from '@angular/material/progress-spinner';
     LoanRequestFormComponent,
     MatButtonModule,
     MatIconModule,
-    MatProgressSpinner
+    MatProgressSpinnerModule
   ],
   templateUrl: './loan-application.component.html',
   styleUrl: './loan-application.component.scss'
 })
-export class LoanApplicationComponent implements OnInit {
+export class LoanApplicationComponent implements OnInit, OnDestroy {
 
   clientIdToInject: number | null = null;
   isLoading: boolean = true;
@@ -36,37 +37,54 @@ export class LoanApplicationComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute, // Para leer query params
     private loansService: LoansService,
     private authService: AuthenticationService,
     private clientsService: ClientsService
   ) {}
 
   ngOnInit(): void {
-    // 1. Get the logged-in user's ID (IAM)
+    // 1. Verificar si es un Escenario Asistido (Admin creando para Cliente)
+    const queryClientId = this.route.snapshot.queryParamMap.get('clientId');
+    const isAdmin = this.authService.hasRole('ROLE_ADMIN');
+
+    if (queryClientId && isAdmin) {
+      // Escenario: ADMIN ASISTIDO
+      // Si hay ID en la URL y soy Admin, confío en ese ID directamente.
+      console.log(`Loan Application: Admin assisting client #${queryClientId}`);
+      this.clientIdToInject = Number(queryClientId);
+      this.isLoading = false;
+    } else {
+      // Escenario: AUTOSERVICIO (Cliente pidiendo para sí mismo)
+      // Ignoramos la URL y buscamos la identidad real del usuario logueado.
+      this.loadIdentityFromToken();
+    }
+  }
+
+  /**
+   * Lógica original: Busca el perfil basado en el token del usuario.
+   */
+  private loadIdentityFromToken() {
     this.authSubscription = this.authService.currentUserId.pipe(
       take(1),
-      // 2. Use that ID to fetch the client profile
       switchMap(userId => {
-        if (userId && userId > 0) {
+        if (userId) {
           return this.clientsService.getClientByUserId(userId);
         }
-        return [null];
+        return of(null);
       })
     ).subscribe({
       next: (clientProfile: Client | null) => {
         if (clientProfile && clientProfile.id) {
-          // 3. If the profile is found, store the ID to inject it into the form
           this.clientIdToInject = clientProfile.id;
-          console.log(`Loan Application: Found Client ID ${this.clientIdToInject} for injection.`);
+          console.log(`Loan Application: Self-service for Client ID ${this.clientIdToInject}`);
         } else {
-          // This should not happen thanks to the OnboardingGuard, but it's an extra safeguard.
-          console.error("Loan Application: Client profile not found despite being logged in.");
-          // Redirect to home or an error page if the ID is not found.
+          console.error("Loan Application: Client profile not found for logged user.");
         }
         this.isLoading = false;
       },
       error: (err) => {
-        console.error("Error fetching client ID for loan application.", err);
+        console.error("Error fetching identity.", err);
         this.isLoading = false;
       }
     });
@@ -82,10 +100,19 @@ export class LoanApplicationComponent implements OnInit {
     this.loansService.create(loanData).subscribe({
       next: (response) => {
         console.log('Loan submitted successfully!', response);
-        this.router.navigate(['/home']).then();
+
+        // UX: Redirección inteligente al terminar
+        if (this.authService.hasRole('ROLE_ADMIN')) {
+          // Si soy Admin, vuelvo al perfil del cliente que estaba ayudando
+          this.router.navigate(['/clients', loanData.clientId]);
+        } else {
+          // Si soy Cliente, voy a mi lista personal
+          this.router.navigate(['/my-loans']);
+        }
       },
       error: (error) => {
         console.error('Error submitting loan:', error);
+        // Aquí podrías mostrar un MatSnackBar con el error
       }
     });
   }
