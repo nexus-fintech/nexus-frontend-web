@@ -8,10 +8,9 @@ import {MatCardModule} from '@angular/material/card';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {CommonModule} from '@angular/common';
 
-// Nota: ClientCreateFormComponent ya no es necesario aquí.
 import {Client} from '../../model/client.entity';
 import {ClientsService} from '../../services/clients.service';
-import {CreateClientRequest} from '../../model/create-client.request'; // Se mantiene solo por si se usa en el servicio, pero no en este componente
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-client-management',
@@ -25,18 +24,15 @@ import {CreateClientRequest} from '../../model/create-client.request'; // Se man
     MatButtonModule,
     MatCardModule,
     MatTooltipModule,
-    // Eliminado: ClientCreateFormComponent
+    RouterLink,
   ],
   templateUrl: './client-management.component.html',
   styleUrl: './client-management.component.scss'
 })
 export class ClientManagementComponent implements OnInit {
 
-  // Definición de columnas
   displayedColumns: string[] = ['id', 'fullName', 'email', 'dni', 'city', 'actions'];
   dataSource = new MatTableDataSource<Client>();
-
-  // Eliminado: isCreating = false; <-- Ya no se usa
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -54,7 +50,4 @@ export class ClientManagementComponent implements OnInit {
       this.dataSource.sort = this.sort;
     });
   }
-
-  // Eliminadas las funciones onClientCreated, onCancelCreation, y startCreation.
-  // Este componente es ahora solo de visualización y gestión.
 }

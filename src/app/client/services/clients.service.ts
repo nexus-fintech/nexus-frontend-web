@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { BaseService } from "../../shared/services/base.service";
 import { Client } from "../model/client.entity";
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {catchError, Observable, of} from 'rxjs';
+import {catchError, Observable, of, retry} from 'rxjs';
 
 /**
- * Servicio de Infraestructura para el Bounded Context: Client.
- * Maneja la comunicación HTTP con el endpoint /clients.
+ * Infrastructure Service for the Client Bounded Context.
+ * Handles HTTP communication with the /clients endpoint.
  */
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class ClientsService extends BaseService<Client> {
 
   constructor(http: HttpClient) {
     super(http);
-    // Define el endpoint específico: http://localhost:8080/api/v1/clients
+    // Defines the specific endpoint: http://localhost:8080/api/v1/clients
     this.resourceEndpoint = '/clients';
   }
 
@@ -31,5 +31,15 @@ export class ClientsService extends BaseService<Client> {
         return this.handleError(error);
       })
     );
+  }
+
+  /**
+   * Retrieves a client by its numeric ID.
+   * GET /api/v1/clients/{id}
+   */
+  getById(id: number): Observable<Client> {
+    const url = `${this.resourcePath()}/${id}`;
+    return this.http.get<Client>(url, this.httpOptions)
+      .pipe(retry(2), catchError(this.handleError));
   }
 }
