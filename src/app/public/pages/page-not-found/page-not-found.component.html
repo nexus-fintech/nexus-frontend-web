@@ -1,1 +1,16 @@
-<p>page-not-found works!</p>
+<div class="not-found-container">
+
+  <div class="content">
+    <mat-icon class="large-icon">sentiment_dissatisfied</mat-icon>
+
+    <h1>404</h1>
+    <h2>Page Not Found</h2>
+
+    <p>Sorry, the path <code>/{{ invalidUrl }}</code> does not exist or has been moved.</p>
+
+    <button mat-flat-button color="primary" routerLink="/home">
+      <mat-icon>home</mat-icon> Go Back Home
+    </button>
+  </div>
+
+</div>

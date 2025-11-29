@@ -1,59 +1,110 @@
-# NexusFrontendWeb
+# **Nexus Finance \- Web Portal 💻**
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.19.
+**Interfaz administrativa moderna y reactiva para la plataforma Nexus Finance. Construida con los últimos estándares de Angular 19 (Standalone Components & Signals).**
 
-## Development server
+## **🏗️ Arquitectura del Proyecto**
 
-To start a local development server, run:
+El proyecto sigue una estructura de **Monolito Modular** organizada por dominios de negocio (Bounded Contexts). Se prioriza la agrupación por funcionalidad (iam, client, loan) sobre la agrupación por tipo técnico.
 
-```bash
-ng serve
-```
+### **Estructura de Carpetas (Estado Actual)**
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+src/app/    
+├── client/         \# Contexto: Gestión de Clientes    
+│   ├── components/ \# Formularios (ClientCreateForm)    
+│   ├── pages/      \# Vistas (Profile, Management)    
+│   └── services/   \# ClientsService    
+│    
+├── iam/            \# Contexto: Identidad y Seguridad    
+│   ├── component/  \# Componentes visuales de Auth    
+│   ├── model/      \# DTOs (SignInRequest, etc.)    
+│   ├── pages/      \# Vistas (Sign In, Sign Up)    
+│   └── services/   \# Lógica de Seguridad (AuthService, Guards, Interceptors)    
+│    
+├── loan/           \# Contexto: Gestión de Préstamos    
+│   └── ... (Componentes, Modelos, Páginas, Servicios)    
+│    
+├── public/         \# Estructura Pública y Layout    
+│   ├── component/  \# Componentes visuales globales (Navbar)    
+│   └── pages/      \# Vistas estáticas (Home, About, 404\)    
+│    
+└── shared/         \# Utilidades Base Reutilizables    
+    ├── components/ \# Clases base (BaseFormComponent)    
+    └── services/   \# Lógica HTTP genérica (BaseService)
 
-## Code scaffolding
+### **Patrones de Diseño Implementados**
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+* **Bounded Context Packaging:** Cada módulo (iam, client, loan) es autocontenido y posee sus propios servicios y modelos.  
+* **Smart vs Dumb Components:** Separación entre páginas que gestionan datos y componentes de presentación pura.  
+* **BaseService Generics:** Abstracción en shared para reducir la repetición de código HTTP en los servicios de dominio.  
+* **Reactive Forms:** Uso extensivo de formularios reactivos tipados.  
+* **Guard Pattern:** Lógica de protección de rutas centralizada en el módulo iam.
 
-```bash
-ng generate component component-name
-```
+## **🛠️ Stack Tecnológico**
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+| Tecnología | Versión | Propósito |
+| :---- | :---- | :---- |
+| **Angular** | **19.x** | Framework Core (Sin NgModules, 100% Standalone). |
+| **Angular Material** | 19.x | Componentes UI Enterprise (Tablas, Cards, Inputs, Dialogs). |
+| **SCSS (Sass)** | Nativo | **Estilado modular y nativo.** Uso de CSS Grid/Flexbox sin dependencias de terceros (No Tailwind). |
+| **RxJS** | 7.x | Manejo avanzado de flujos asíncronos HTTP. |
+| **Node.js** | 22.x LTS | Entorno de ejecución requerido. |
 
-```bash
-ng generate --help
-```
+## **✨ Módulos Funcionales**
 
-## Building
+### **🔐 IAM (Seguridad Avanzada)**
 
-To build the project run:
+* **Ubicación:** src/app/iam  
+* **Autenticación:** Login y Registro con JWT.  
+* **Interceptores:** Inyección automática de tokens en las peticiones HTTP.  
+* **Guards:**  
+  * authentication.guard: Verifica sesión activa.  
+  * onboarding.guard: Fuerza el completado de perfil.  
+  * role-check.guard: Restringe acceso por roles (ADMIN/CLIENT).
 
-```bash
-ng build
-```
+### **👥 Gestión de Clientes**
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+* **Ubicación:** src/app/client  
+* **Perfil 360:** Vista detallada con datos personales e historial financiero.  
+* **Edición Modal:** Formulario reutilizable para creación y edición.
 
-## Running unit tests
+### **💰 Motor de Préstamos**
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+* **Ubicación:** src/app/loan  
+* **Solicitud:** Formulario con inyección de identidad segura.  
+* **Evaluación:** Panel administrativo para aprobación de créditos.  
+* **Detalle:** Visualización de cronogramas de pago.
 
-```bash
-ng test
-```
+### **🌐 Público & Layout**
 
-## Running end-to-end tests
+* **Ubicación:** src/app/public  
+* **Navbar:** Barra de navegación inteligente que adapta sus opciones según el rol del usuario y el estado de su perfil.
 
-For end-to-end (e2e) testing, run:
+## **🚀 Instalación y Ejecución**
 
-```bash
-ng e2e
-```
+### **Prerrequisitos**
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Asegúrate de tener el Backend (nexus-backend) corriendo en el puerto 8080\.
 
-## Additional Resources
+### **Pasos**
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+1. **Instalar dependencias:**  
+   npm install
+
+2. **Iniciar Servidor de Desarrollo:**  
+   ng serve
+
+3. Acceder:  
+   Navega a http://localhost:4200/.
+
+### **Configuración de Entornos**
+
+El archivo src/environments/environment.ts conecta con la API local:
+
+export const environment \= {    
+  production: false,    
+  serverBasePath: 'http://localhost:8080/api/v1'    
+};
+
+## **👤 Autor**
+
+**Angel Antonio Cancho Corilla** \- *Full Stack Engineer*
