@@ -6,13 +6,30 @@
   padding: 0 16px;
   display: flex;
   align-items: center;
+  height: 64px;
 }
 
 .brand-logo {
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   letter-spacing: 0.5px;
-  mat-icon { margin-right: 8px; }
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  .logo-img {
+    height: 36px;
+    width: auto;
+    margin-right: 12px;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+  }
+
+  .brand-text {
+    line-height: 1;
+    font-weight: 800;
+
+    position: relative;
+    top: -12.5px;
+  }
 }
 
 .spacer {
@@ -38,10 +55,9 @@
     border-radius: 4px;
   }
 
-  // BOTÓN DE ALERTA PARA ONBOARDING (Nuevo)
   .onboarding-alert-btn {
-    background-color: #fef3c7; // Fondo Amarillo Claro
-    color: #b45309;            // Texto Marrón
+    background-color: #fef3c7;
+    color: #b45309;
     font-weight: 700;
     border-radius: 4px;
     padding: 0 12px;
@@ -53,7 +69,7 @@
     }
 
     &:hover {
-      background-color: #fde047; // Amarillo más intenso al pasar el mouse
+      background-color: #fde047;
     }
   }
 
@@ -113,5 +129,28 @@
   display: block;
   @media (min-width: 960px) {
     display: none;
+  }
+}
+.brand-logo {
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+
+  .logo-img {
+    height: 42px;
+    width: auto;
+    margin-right: 12px;
+
+    filter: brightness(0) invert(1);
+
+    opacity: 0.95;
+  }
+
+  .brand-text {
+    line-height: 1;
+    font-weight: 800;
   }
 }

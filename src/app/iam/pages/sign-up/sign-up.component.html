@@ -3,9 +3,8 @@
   <mat-card class="auth-card">
 
     <mat-card-header class="auth-header">
-      <div class="logo-container">
-        <mat-icon>person_add</mat-icon>
-      </div>
+      <img src="images/logos/nexus_logo.png" alt="Nexus Finance Logo" class="auth-logo">
+
       <mat-card-title>Create Account</mat-card-title>
       <mat-card-subtitle>Join Nexus Finance today</mat-card-subtitle>
     </mat-card-header>
@@ -14,6 +13,7 @@
 
       <form [formGroup]="form" (submit)="onSubmit()" class="auth-form">
 
+        <!-- Username -->
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Username</mat-label>
           <mat-icon matPrefix>account_circle</mat-icon>
@@ -23,6 +23,7 @@
           }
         </mat-form-field>
 
+        <!-- Password con Toggle -->
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Password</mat-label>
           <mat-icon matPrefix>vpn_key</mat-icon>
@@ -39,6 +40,7 @@
           }
         </mat-form-field>
 
+        <!-- Botón con Loader -->
         <div class="actions">
           <button mat-flat-button color="primary" class="submit-btn" [disabled]="isLoading">
             @if (isLoading) {
