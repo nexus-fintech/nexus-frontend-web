@@ -1,23 +1,43 @@
+.login-error {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  padding: 12px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    color: #ef4444;
+  }
+}
+
 .auth-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 80vh; // Altura considerable para centrar verticalmente
+  min-height: 80vh;
   padding: 24px;
-  background-color: transparent; // El fondo gris ya viene del app.component
+  background-color: transparent;
 }
 
 .auth-card {
   width: 100%;
-  max-width: 400px; // Ancho estándar para login
-  overflow: hidden; // Para respetar bordes redondeados
+  max-width: 400px;
+  overflow: hidden;
   border-radius: 12px;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 .auth-header {
-  background-color: #f8fafc; // Slate-50
-  padding: 32px 24px 24px;   // Espacio generoso
+  background-color: #f8fafc;
+  padding: 32px 24px 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,8 +45,8 @@
   border-bottom: 1px solid #e2e8f0;
 
   .logo-container {
-    background-color: #e0e7ff; // Indigo muy claro
-    color: #312e81;            // Indigo oscuro
+    background-color: #e0e7ff;
+    color: #312e81;
     width: 64px;
     height: 64px;
     border-radius: 50%;
@@ -78,11 +98,11 @@ mat-icon[matPrefix] {
   margin-top: 16px;
 
   .submit-btn {
-    width: 100%; // Botón ancho completo
-    padding: 24px 0; // Más alto para fácil click
+    width: 100%;
+    padding: 24px 0;
     font-size: 1rem;
     font-weight: 500;
-    line-height: 0; // Centrar texto verticalmente
+    line-height: 0;
   }
 }
 
@@ -97,7 +117,7 @@ mat-icon[matPrefix] {
     transition: color 0.2s;
 
     &:hover {
-      color: #3b82f6; // Azul al pasar el mouse
+      color: #3b82f6;
       text-decoration: underline;
     }
   }
@@ -117,5 +137,16 @@ mat-icon[matPrefix] {
     align-items: center;
     justify-content: center;
     gap: 4px;
+  }
+}
+
+.loader-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  ::ng-deep .mat-mdc-progress-spinner circle, .mat-mdc-progress-spinner circle {
+    stroke: white !important;
   }
 }

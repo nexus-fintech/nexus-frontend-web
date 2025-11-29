@@ -14,21 +14,25 @@
 
       <form [formGroup]="form" (submit)="onSubmit()" class="auth-form">
 
-        <!-- Campo Username -->
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Username</mat-label>
           <mat-icon matPrefix>account_circle</mat-icon>
-          <input matInput placeholder="Choose a username" formControlName="username">
+          <input matInput placeholder="Choose a username" formControlName="username" autocomplete="username">
           @if (isInvalidControl(form,'username')) {
             <mat-error>{{ errorMessagesForControl(form,'username')}}</mat-error>
           }
         </mat-form-field>
 
-        <!-- Campo Password -->
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Password</mat-label>
           <mat-icon matPrefix>vpn_key</mat-icon>
-          <input matInput type="password" placeholder="Create a strong password" formControlName="password">
+
+          <input [type]="hidePassword ? 'password' : 'text'" matInput placeholder="Create a strong password" formControlName="password" autocomplete="new-password">
+
+          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+
           <mat-hint align="end">Min 6 characters</mat-hint>
           @if (isInvalidControl(form,'password')) {
             <mat-error>{{ errorMessagesForControl(form,'password')}}</mat-error>
@@ -36,8 +40,15 @@
         </mat-form-field>
 
         <div class="actions">
-          <button mat-flat-button color="primary" class="submit-btn">
-            Create Account
+          <button mat-flat-button color="primary" class="submit-btn" [disabled]="isLoading">
+            @if (isLoading) {
+              <div class="loader-content">
+                <mat-progress-spinner mode="indeterminate" diameter="20" color="accent"></mat-progress-spinner>
+                <span>Creating Account...</span>
+              </div>
+            } @else {
+              <span>Create Account</span>
+            }
           </button>
         </div>
 

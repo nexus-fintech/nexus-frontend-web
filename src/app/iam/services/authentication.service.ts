@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {environment} from "../../../environments/environment";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject, Observable, tap, throwError} from "rxjs"; // Importar tap y throwError
+import {catchError} from "rxjs/operators";
 import {Router} from "@angular/router";
 import {SignInRequest} from "../model/sign-in.request";
 import {SignInResponse} from "../model/sign-in.response";
@@ -47,89 +48,76 @@ export class AuthenticationService {
     }
   }
 
-
   get isSignedIn() { return this.signedIn.asObservable(); }
-
-  get isUserSignedIn(): boolean {
-    return this.signedIn.value;
-  }
-
+  get isUserSignedIn(): boolean { return this.signedIn.value; }
   get currentUserId() { return this.signedInUserId.asObservable(); }
   get currentUsername() { return this.signedInUsername.asObservable(); }
   get currentRoles() { return this.signedInRoles.asObservable(); }
   hasRole(role: string): boolean { return this.signedInRoles.value.includes(role); }
 
-
   // --- Actions ---
-
   signUp(signUpRequest: SignUpRequest): Observable<SignUpResponse> {
     return this.http.post<SignUpResponse>(`${this.basePath}/authentication/sign-up`, signUpRequest, this.httpOptions);
   }
 
-  signIn(signInRequest: SignInRequest) {
+  signIn(signInRequest: SignInRequest): Observable<SignInResponse> {
     return this.http.post<SignInResponse>(`${this.basePath}/authentication/sign-in`, signInRequest, this.httpOptions)
-      .subscribe({
-        next: (response) => {
-          const rolesToStore = response.roles || [];
-
-          // 1. Save session state
-          this.signedIn.next(true);
-          this.signedInUserId.next(response.id);
-          this.signedInUsername.next(response.username);
-          this.signedInRoles.next(rolesToStore);
-
-          localStorage.setItem('token', response.token);
-          localStorage.setItem('userId', response.id.toString());
-          localStorage.setItem('username', response.username);
-          localStorage.setItem('roles', JSON.stringify(rolesToStore));
-
-          console.log(`Signed in as ${response.username} with roles: ${rolesToStore}`);
-
-          // SMART REDIRECTION LOGIC
-
-          // Case 1: Admin
-          if (rolesToStore.includes('ROLE_ADMIN')) {
-            console.log('Redirecting ADMIN to Home.');
-            this.router.navigate(['/home']).then();
-            return;
-          }
-
-          // Case 2: Client (Requires client profile check)
-          if (rolesToStore.includes('ROLE_CLIENT')) {
-
-            const userId = response.id;
-
-            // **Chained Request:** Check if client profile exists
-            this.clientsService.getClientByUserId(userId).subscribe({
-              next: (clientProfile) => {
-                if (clientProfile) {
-                  // Profile EXISTS: Redirect to Home
-                  console.log('Client profile found. Redirecting to Home.');
-                  this.router.navigate(['/home']).then();
-                } else {
-                  // Profile DOES NOT EXIST: Redirect to Onboarding page
-                  console.warn('Client profile MISSING. Redirecting to Onboarding.');
-                  this.router.navigate(['/register-profile']).then();
-                }
-              },
-              error: (err) => {
-                // If profile check fails, for safety, redirect to complete profile
-                console.error('Error checking client profile:', err);
-                this.router.navigate(['/register-profile']).then();
-              }
-            });
-            return;
-          }
-
-          // Case 3: Unknown role or no roles
-          console.log('User role unknown. Redirecting to Home.');
-          this.router.navigate(['/home']).then();
-        },
-        error: (error) => {
+      .pipe(
+        tap((response) => {
+          this.handleSignInSuccess(response);
+        }),
+        catchError((error) => {
           this.signOut();
           console.error(`Error while signing in: ${error}`);
+          return throwError(() => error);
+        })
+      );
+  }
+
+  // Lógica de éxito extraída para limpieza
+  private handleSignInSuccess(response: SignInResponse) {
+    const rolesToStore = response.roles || [];
+
+    this.signedIn.next(true);
+    this.signedInUserId.next(response.id);
+    this.signedInUsername.next(response.username);
+    this.signedInRoles.next(rolesToStore);
+
+    localStorage.setItem('token', response.token);
+    localStorage.setItem('userId', response.id.toString());
+    localStorage.setItem('username', response.username);
+    localStorage.setItem('roles', JSON.stringify(rolesToStore));
+
+    console.log(`Signed in as ${response.username} with roles: ${rolesToStore}`);
+
+    if (rolesToStore.includes('ROLE_ADMIN')) {
+      console.log('Redirecting ADMIN to Home.');
+      this.router.navigate(['/home']).then();
+      return;
+    }
+
+    if (rolesToStore.includes('ROLE_CLIENT')) {
+      const userId = response.id;
+      this.clientsService.getClientByUserId(userId).subscribe({
+        next: (clientProfile) => {
+          if (clientProfile) {
+            console.log('Client profile found. Redirecting to Home.');
+            this.router.navigate(['/home']).then();
+          } else {
+            console.warn('Client profile MISSING. Redirecting to Onboarding.');
+            this.router.navigate(['/register-profile']).then();
+          }
+        },
+        error: (err) => {
+          console.error('Error checking client profile:', err);
+          this.router.navigate(['/register-profile']).then();
         }
       });
+      return;
+    }
+
+    console.log('User role unknown. Redirecting to Home.');
+    this.router.navigate(['/home']).then();
   }
 
   signOut() {

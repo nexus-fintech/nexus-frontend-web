@@ -4,13 +4,14 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {AuthenticationService} from "../../services/authentication.service";
 import {SignUpRequest} from "../../model/sign-up.request";
 import {SignInRequest} from "../../model/sign-in.request";
+
 import {MatCardModule} from "@angular/material/card";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {RouterLink} from "@angular/router";
-
 
 @Component({
   selector: 'app-sign-up',
@@ -22,6 +23,7 @@ import {RouterLink} from "@angular/router";
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    MatProgressSpinnerModule,
     RouterLink
   ],
   templateUrl: './sign-up.component.html',
@@ -31,6 +33,9 @@ export class SignUpComponent extends BaseFormComponent implements OnInit {
 
   form!: FormGroup;
   submitted = false;
+
+  hidePassword = true;
+  isLoading = false;
 
   constructor(private builder: FormBuilder, private authenticationService: AuthenticationService) {
     super();
@@ -46,6 +51,8 @@ export class SignUpComponent extends BaseFormComponent implements OnInit {
   onSubmit() {
     if (this.form.invalid) return;
 
+    this.isLoading = true;
+
     let username = this.form.value.username;
     let password = this.form.value.password;
 
@@ -53,8 +60,7 @@ export class SignUpComponent extends BaseFormComponent implements OnInit {
 
     this.authenticationService.signUp(signUpRequest).subscribe({
       next: () => {
-        console.log(`Sign up successful. Attempting autologin for: ${username}`);
-
+        console.log(`Sign up successful. Attempting autologin...`);
         const signInRequest = new SignInRequest(username, password);
 
         this.authenticationService.signIn(signInRequest);
@@ -62,7 +68,8 @@ export class SignUpComponent extends BaseFormComponent implements OnInit {
       },
       error: (error) => {
         console.error(`Registration failed: ${error}`);
-        this.submitted = true;
+        this.submitted = false;
+        this.isLoading = false;
       }
     });
   }

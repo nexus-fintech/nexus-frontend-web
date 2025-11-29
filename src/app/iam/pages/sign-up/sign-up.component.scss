@@ -85,7 +85,6 @@ mat-icon[matPrefix] {
   }
 }
 
-// Enlace al Login
 .login-link {
   text-align: center;
   margin-top: 24px;
@@ -93,7 +92,7 @@ mat-icon[matPrefix] {
   color: #64748b;
 
   a {
-    color: #3b82f6; // Azul corporativo
+    color: #3b82f6;
     text-decoration: none;
     font-weight: 600;
     margin-left: 4px;
@@ -101,5 +100,17 @@ mat-icon[matPrefix] {
     &:hover {
       text-decoration: underline;
     }
+  }
+
+}
+
+.loader-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  ::ng-deep .mat-mdc-progress-spinner circle, .mat-mdc-progress-spinner circle {
+    stroke: white !important;
   }
 }
