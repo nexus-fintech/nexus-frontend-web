@@ -3,6 +3,7 @@ import { BaseService } from "../../shared/services/base.service";
 import { Client } from "../model/client.entity";
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {catchError, Observable, of, retry} from 'rxjs';
+import {UpdateClientRequest} from '../model/update-client.request';
 
 /**
  * Infrastructure Service for the Client Bounded Context.
@@ -40,6 +41,16 @@ export class ClientsService extends BaseService<Client> {
   getById(id: number): Observable<Client> {
     const url = `${this.resourcePath()}/${id}`;
     return this.http.get<Client>(url, this.httpOptions)
+      .pipe(retry(2), catchError(this.handleError));
+  }
+
+  /**
+   * Updates an existing client.
+   * PUT /api/v1/clients/{id}
+   */
+  override update(id: number, data: UpdateClientRequest): Observable<Client> {
+    const url = `${this.resourcePath()}/${id}`;
+    return this.http.put<Client>(url, JSON.stringify(data), this.httpOptions)
       .pipe(retry(2), catchError(this.handleError));
   }
 }

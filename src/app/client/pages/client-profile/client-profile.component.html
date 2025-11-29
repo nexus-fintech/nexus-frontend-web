@@ -36,7 +36,9 @@
         </div>
 
         <mat-card-actions>
-          <button mat-stroked-button color="primary" class="full-width-btn">Edit Profile</button>
+          <button mat-stroked-button color="primary" class="full-width-btn" (click)="onEditProfile()">
+            Edit Profile
+          </button>
         </mat-card-actions>
       </mat-card>
 
@@ -44,7 +46,6 @@
         <div class="card-header-actions">
           <h3>Loan History</h3>
 
-          <!-- BOTÓN MODIFICADO: Ahora pasa el ID del cliente en la URL -->
           <button mat-flat-button color="primary" [routerLink]="['/loans/apply']" [queryParams]="{ clientId: client.id }">
             <mat-icon>add</mat-icon> New Loan
           </button>

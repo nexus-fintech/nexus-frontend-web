@@ -1,8 +1,8 @@
 /**
- * Creation DTO.
- * Data required to register a new client.
+ * Update DTO.
+ * Data required to modify an existing profile.
  */
-export interface CreateClientRequest {
+export interface UpdateClientRequest {
   firstName: string;
   lastName: string;
   email: string;

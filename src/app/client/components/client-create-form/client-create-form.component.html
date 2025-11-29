@@ -4,16 +4,21 @@
 
     <mat-card-header class="form-header">
       <div mat-card-avatar class="avatar-bg">
-        <mat-icon>person_add</mat-icon>
+        <mat-icon>{{ isEditMode ? 'edit' : 'person_add' }}</mat-icon>
       </div>
-      <mat-card-title>New Client Registration</mat-card-title>
-      <mat-card-subtitle>Complete the form to onboard a new customer</mat-card-subtitle>
+
+      <mat-card-title>
+        {{ isEditMode ? 'Edit Profile' : 'New Client Registration' }}
+      </mat-card-title>
+
+      <mat-card-subtitle>
+        {{ isEditMode ? 'Update the client information below' : 'Complete the form to onboard a new customer' }}
+      </mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content class="form-content">
       <form [formGroup]="clientForm" (ngSubmit)="onSubmit()" class="form-grid">
 
-        <!-- Fila 1 -->
         <mat-form-field appearance="outline">
           <mat-label>First Name</mat-label>
           <input matInput formControlName="firstName">
@@ -91,8 +96,10 @@
 
     <mat-card-actions align="end" class="form-actions">
       <button mat-button (click)="onCancel()">Cancel</button>
+
       <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="clientForm.invalid">
-        <mat-icon>save</mat-icon> Register Client
+        <mat-icon>{{ isEditMode ? 'save' : 'person_add' }}</mat-icon>
+        {{ isEditMode ? 'Save Changes' : 'Register Client' }}
       </button>
     </mat-card-actions>
 
